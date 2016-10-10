@@ -22,7 +22,6 @@ void Network::set_nodes()
 
 void Network::set_links()
 {
-	//srand (time(NULL));
 	uint64_t index = 0;
 	for (vector<Node>::iterator i = nodes.begin(); i != nodes.end(); ++i) {
 		for (vector<Node>::iterator j = i + 1; j != nodes.end(); ++j) {

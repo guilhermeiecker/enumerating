@@ -1,13 +1,13 @@
 CC=g++
 CFLAGS=-Wall -std=c++11
 
-OBJ= recursive.o Recursive.o Network.o Link.o Node.o
+OBJ= enumerating.o Recursive.o Network.o Link.o Node.o
 
-recursive: $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o recursive
+enumerating: $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o enumerating
 
-recursive.o: recursive.cc
-	$(CC) $(CFLAGS) -c recursive.cc
+enumerating.o: enumerating.cc
+	$(CC) $(CFLAGS) -c enumerating.cc
 
 Recursive.o: Recursive.cc
 	$(CC) $(CFLAGS) -c Recursive.cc
@@ -22,4 +22,4 @@ Node.o: Node.cc
 	$(CC) $(CFLAGS) -c Node.cc
 
 clean:
-	rm *.o iterative recursive
+	rm *.o enumerating

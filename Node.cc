@@ -15,7 +15,7 @@ uint64_t Node::get_degree()
 {
 	return degree;
 }
-	
+
 double Node::get_x()
 {
 	return x;
@@ -63,7 +63,6 @@ double Node::distance(Node n)
 
 void Node::random_position(double area)
 {
-	//srand (time(NULL));
 	x = ((double)rand() / (RAND_MAX)) * area;
 	y = ((double)rand() / (RAND_MAX)) * area;
 }

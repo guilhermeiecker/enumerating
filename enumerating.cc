@@ -16,7 +16,7 @@ int main(int argc, char** argv)
   n = atoi(argv[1]);
   a = (double)atof(argv[2]);
 
-  srand((int)(a*100));
+  //srand((int)(a*100));
 
   Network* network = new Network(n, a, TPOWER);
   m = network->get_links().size();

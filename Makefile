@@ -2,8 +2,13 @@ CC=g++
 CFLAGS=-g -std=c++11 -Wextra -Wunused -Wall -mcmodel=large
 LFLAGS= -lm
 
-enumerator: $(OBJ)
-	$(CC) $(CFLAGS) enumerator.cpp -o enumerator $(LFLAGS)
+main: $(OBJ)
+	$(CC) $(CFLAGS) main.cpp -o main $(LFLAGS)
 
 clean:
-	rm enumerator 
+	rm main
+
+clean-all:
+	rm main
+	rm networks/*
+	rm results/* 

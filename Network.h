@@ -1,3 +1,10 @@
+/*
+** Network class modeling the entire network with nodes and links
+** Author: Guilherme Iecker Ricardo
+** Institute: Systems Engineering and Computer Science Program - COPPE/UFRJ
+*/
+
+
 #pragma once
 
 #include <stdint.h>	// uint64_t

@@ -1,3 +1,10 @@
+/*
+** Link class modeling a physical link between two nodes
+** Author: Guilherme Iecker Ricardo
+** Institute: Systems Engineering and Computer Science Program - COPPE/UFRJ
+*/
+
+
 #pragma once
 
 #include <iostream>	// cout

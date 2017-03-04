@@ -1,16 +1,16 @@
 /*
-** Enumerator algorithm for feasible set enumeration
+** Enumerator class implementing an algorithm that enumerates all feasible sets of links 
 ** Author: Guilherme Iecker Ricardo
-** Institute: Programa de Engenharia de Sistemas e Computação - COPPE/UFRJ
+** Institute: Systems Engineering and Computer Science Program - COPPE/UFRJ
 */
 
 #pragma once
 
-#include <iostream>
-#include <stdint.h>
-#include <math.h>
-#include <vector>
-#include <fstream>
+#include <iostream>	// cout, endl
+#include <stdint.h>	// uint64_t
+#include <math.h>	// pow, log
+#include <vector>	// vector
+#include <fstream>	// ifstream
 
 #include "Node.h"
 #include "Link.h"
@@ -23,7 +23,7 @@ using namespace std;
 class Enumerator
 {
 private:
-	uint64_t n, m;
+	uint64_t n, m, f;
 	uint128_t it, index;
 	vector<Link*> cset;
 	vector<uint128_t> fset;
@@ -41,11 +41,9 @@ private:
 public:
 	Enumerator(Network*, ofstream*);
 	void find_fset(uint128_t);
-	vector<uint128_t> get_fset();
-	void clear_fset();
+	uint64_t get_fset();
 };
 
-/// log2 bitwise
 uint128_t newlog2(uint128_t x)
 {
 	uint128_t count = 0;
@@ -57,7 +55,6 @@ uint128_t newlog2(uint128_t x)
 	return count;
 }
 
-/// pow bitwise
 uint128_t newpow(uint128_t x)
 {
 	uint128_t res = 1;
@@ -67,11 +64,6 @@ uint128_t newpow(uint128_t x)
 
 void Enumerator::find_fset(uint128_t x)
 {
-	if (fset.size() > 19000000)
-	{
-		fset.clear();
-		return;
-	}
 	it = x;
 	uint128_t limit;
 	if (x == 0)
@@ -86,7 +78,7 @@ void Enumerator::find_fset(uint128_t x)
 		add_link(limit);
 		if (is_feasible()) {
 			outfile->write((char*)&x, sizeof(uint128_t));
-			fset.push_back(x);
+			f++;
 			for (uint128_t i = 0; i < limit; i++)
 				find_fset(x + newpow(i));
 		}
@@ -114,11 +106,11 @@ void Enumerator::add_link(uint128_t index)
 
 double Enumerator::calculate_interference(Node* a, Node* b)
 {
-  double dist = a->distance(*b);
-  if (dist > network->d0)
-  	return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
-  else
-    return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
+	double dist = a->distance(*b);
+	if (dist > network->d0)
+		return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
+	else
+    		return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
 bool Enumerator::is_feasible()
@@ -137,7 +129,7 @@ bool Enumerator::primary_test()
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
 		if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
-    	return false;
+    			return false;
 	}
 	return true;
 }
@@ -169,24 +161,13 @@ void Enumerator::del_link(uint128_t index)
 		    (*i)->del_interf();
 }
 
-Enumerator::Enumerator(Network* g, ofstream* file): n(g->get_nodes().size()), m(g->get_links().size()), network(g), outfile(file) {}
-
-vector<uint128_t> Enumerator::get_fset()
+Enumerator::Enumerator(Network* g, ofstream* file): 
+	n(g->get_nodes().size()), m(g->get_links().size()), network(g), outfile(file) 
 {
-	return fset;
+	f = 0;
 }
 
-/*
-* TODO: cout não funciona com 128 bits
-void Enumerator::print_fset()
+uint64_t Enumerator::get_fset()
 {
-	cout << "Printing feasible sets..." << endl;
-	for (vector<uint128_t>::iterator i = fset.begin(); i != fset.end(); ++i)
-		cout << *i << " ";
-	cout << endl;
-}
-*/
-void Enumerator::clear_fset()
-{
-	fset.clear();
+	return f;
 }

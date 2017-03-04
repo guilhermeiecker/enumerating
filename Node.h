@@ -1,8 +1,15 @@
+/*
+** Node class modeling a simple wireless network node
+** Author: Guilherme Iecker Ricardo
+** Institute: Systems Engineering and Computer Science Program - COPPE/UFRJ
+**/
+
+
 #pragma once
 
 #include <stdint.h>	// uint64_t
-#include <random>		// rand
-#include <math.h>		// sqrt, pow
+#include <random>	// rand
+#include <math.h>	// sqrt, pow
 
 class Node
 {

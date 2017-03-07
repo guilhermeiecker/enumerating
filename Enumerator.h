@@ -64,6 +64,11 @@ uint128_t newpow(uint128_t x)
 
 void Enumerator::find_fset(uint128_t x)
 {
+	if(f > 20000000000000000)
+	{
+		f = 0;
+		return;
+	}
 	it = x;
 	uint128_t limit;
 	if (x == 0)

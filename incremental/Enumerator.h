@@ -15,8 +15,7 @@
 #include "Node.h"
 #include "Link.h"
 #include "Network.h"
-
-typedef unsigned __int128 uint128_t;
+#include "BigInt.h"
 
 using namespace std;
 
@@ -24,74 +23,49 @@ class Enumerator
 {
 private:
 	uint64_t n, m, f;
-	uint128_t it, index;
+	uint128_t index;
 	vector<Link*> cset;
-	vector<uint128_t> fset;
 	Network* network;
 	ofstream* outfile;
 
-	void add_link(uint128_t);
+	void add_link(uint64_t);
 	double calculate_interference(Node*, Node*);
 	bool is_feasible();
 	bool primary_test();
 	bool secondary_test();
 	double calculate_sinr(Link*);
-	void del_link(uint128_t);
+	void del_link(uint64_t);
 	
 public:
 	Enumerator(Network*, ofstream*);
-	void find_fset(uint128_t);
+	void find_fset(BigInt);
 	uint64_t get_fset();
 };
 
-uint128_t newlog2(uint128_t x)
+void Enumerator::find_fset(BigInt x)
 {
-	uint128_t count = 0;
-	while((x & 1) == 0)
-	{
-		x = x / 2;
-		count++;
-	} 
-	return count;
-}
-
-uint128_t newpow(uint128_t x)
-{
-	uint128_t res = 1;
-	res = res << x;
-	return res;
-}
-
-void Enumerator::find_fset(uint128_t x)
-{
-	if(f > 20000000000000000)
-	{
-		f = 0;
-		return;
-	}
-	it = x;
-	uint128_t limit;
+	uint64_t limit;
 	if (x == 0)
 	{
 		limit = m;
 		for (uint64_t i = 0; i < limit; i++)
-			find_fset(x + newpow(i));
+			find_fset(x + pow2(i));
 	}
 	else
 	{
-		limit = newlog2(x & ~(x - 1));
+		limit = log2(x & ~(x - 1));
 		add_link(limit);
 		if (is_feasible()) {
-			outfile->write((char*)&x, sizeof(uint128_t));
+			//outfile->write((char*)&x, sizeof(BigInt));
 			f++;
-			for (uint128_t i = 0; i < limit; i++)
+			for (uint64_t i = 0; i < limit; i++)
 				find_fset(x + newpow(i));
 		}
 		del_link(limit);
 	}
 }
 
-void Enumerator::add_link(uint128_t index)
+void Enumerator::add_link(uint64_t index)
 {
 	if (!cset.empty()) {
 		double interfAB, interfBA;

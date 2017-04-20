@@ -17,6 +17,8 @@
 
 using namespace std;
 
+typedef unsigned __int128 uint128_t;
+
 class Network {
 private:
 	uint64_t num_nodes;
@@ -51,7 +53,7 @@ public:
 	void set_nodes();
 	void set_links();
 
-	Link* get_link(uint64_t);
+	Link* get_link(uint128_t);
 	void print_links();
 };
 
@@ -99,7 +101,7 @@ void Network::set_links()
 	}
 }
 
-Link* Network::get_link(uint64_t idx)
+Link* Network::get_link(uint128_t idx)
 {
 	return &(links[idx]);
 }

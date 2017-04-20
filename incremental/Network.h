@@ -1,3 +1,10 @@
+/*
+** Network class modeling the entire network with nodes and links
+** Author: Guilherme Iecker Ricardo
+** Institute: Systems Engineering and Computer Science Program - COPPE/UFRJ
+*/
+
+
 #pragma once
 
 #include <stdint.h>	// uint64_t
@@ -9,6 +16,8 @@
 #include "Node.h"
 
 using namespace std;
+
+typedef unsigned __int128 uint128_t;
 
 class Network {
 private:
@@ -44,7 +53,7 @@ public:
 	void set_nodes();
 	void set_links();
 
-	Link* get_link(uint64_t);
+	Link* get_link(uint128_t);
 	void print_links();
 };
 
@@ -92,7 +101,7 @@ void Network::set_links()
 	}
 }
 
-Link* Network::get_link(uint64_t idx)
+Link* Network::get_link(uint128_t idx)
 {
 	return &(links[idx]);
 }

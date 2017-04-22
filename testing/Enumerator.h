@@ -57,7 +57,7 @@ void Enumerator::find_fset(BigInt x)
 	add_link(limit);
 	if (is_feasible()) {
 		uint128_t msb = x.get_msb();
-		uint128_t lsb = x.get_msb();
+		uint128_t lsb = x.get_lsb();
 		outfile->write((char*)&msb, sizeof(uint128_t));
 		outfile->write((char*)&lsb, sizeof(uint128_t));
 		f++;
